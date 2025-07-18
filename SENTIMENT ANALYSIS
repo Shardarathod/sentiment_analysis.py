@@ -1,45 +1,53 @@
 # sentiment_analysis.py
+# Step 1: Import Libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report
 
-COMPANY": CODTECH IT SOLUTIONS
+# Step 2: Create Sample Dataset
+data = {
+    'Review': [
+        "I love this product!", "Worst purchase ever.",
+        "Absolutely fantastic!", "Not worth the money.",
+        "Highly recommend it", "Terrible service", 
+        "Very satisfied", "I hate it", 
+        "Great experience", "Bad quality"
+    ],
+    'Sentiment': [
+        "Positive", "Negative", "Positive", "Negative", "Positive",
+        "Negative", "Positive", "Negative", "Positive", "Negative"
+    ]
+}
+df = pd.DataFrame(data)
 
-"NAME": SHARDA MUKINDA RATHOD
+# Step 3: Preprocessing
+df['Review'] = df['Review'].str.lower()
 
-"INTERN ID": CT04DG2722
+# Step 4: Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(
+    df['Review'], df['Sentiment'], test_size=0.3, random_state=42
+)
 
-"DOMAIN": MACHINE LEARING
+# Step 5: TF-IDF Vectorization
+tfidf = TfidfVectorizer(stop_words='english')
+X_train_tfidf = tfidf.fit_transform(X_train)
+X_test_tfidf = tfidf.transform(X_test)
 
-"DURATION": 4 WEEKS
+# Step 6: Logistic Regression Model
+model = LogisticRegression()
+model.fit(X_train_tfidf, y_train)
 
-"MENTOR": NEELA SANTHOSH KUMAR
+# Step 7: Prediction and Evaluation
+y_pred = model.predict(X_test_tfidf)
 
-Descri
-Sentiment Analysis is a natural language processing (NLP) technique that automatically identifies and extracts subjective information from text, such as opinions, emotions, or attitudes. It classifies text into categories like positive, negative, or neutral sentiment.
+# Output results
+print("Predicted Sentiments:", y_pred)
+print("\nAccuracy:", accuracy_score(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
-⚙ What It Involves:
-Data Collection: Gathering text data (reviews, tweets, comments).
 
-Preprocessing: Cleaning text (removing stopwords, punctuation), tokenization, stemming/lemmatization.
-
-Feature Extraction: Converting text into numerical form (e.g., TF-IDF, word embeddings).
-
-Modeling: Training models (e.g., Logistic Regression, Naive Bayes, or deep learning models like LSTM, Transformers) to classify sentiment.
-
-Evaluation: Measuring performance using accuracy, precision, recall, F1-score.
-
-Prediction: Assigning sentiment labels to new text data.
-
- Applications:
-Business: Analyzing customer feedback and product reviews.
-
-Social Media: Monitoring public opinion and brand reputation.
-
-Finance: Predicting stock market trends based on news sentiment.
-
-Healthcare: Understanding patient sentiments in surveys or forums.
-
-Politics: Gauging public sentiment on policies or candidates.
-
-Customer Service: Automating ticket prioritization based on sentiment.
 
 
 
